@@ -1,0 +1,84 @@
+.main-banner-p {
+  color: #909090;
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 24px;
+}
+.span-white-bold {
+  font-weight: 600;
+  font-size: 96px;
+  line-height: 72px;
+  color: white;
+}
+.span-black-bold {
+  font-weight: 600;
+  font-size: 96px;
+  line-height: 72px;
+  color: red;
+}
+@keyframes slow-blink-animation {
+  0%,
+  20% {
+    opacity: 2;
+  }
+  50% {
+    opacity: 0.4;
+  }
+  80%,
+  100% {
+    opacity: 2;
+  }
+}
+.gradient-line {
+  position: relative;
+  width: 100%;
+  height: 2px; /* Adjust thickness as needed */
+}
+
+.gradient-line::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to right, transparent, black 50%, transparent);
+  z-index: -1; /* Ensures gradient is behind the dashed border */
+  border-top: 3px dashed transparent; /* Creates the dashed effect */
+}
+.circular-checkbox input[type="checkbox"] {
+  display: none;
+}
+
+.circular-checkbox span {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+}
+
+.circular-checkbox input[type="checkbox"]:checked + span {
+  background-color: #fff; /* Background color stays white */
+}
+
+.circular-checkbox span:after {
+  content: "";
+  width: 10px; /* Smaller width for inner circle */
+  height: 10px; /* Smaller height for inner circle */
+  background-color: #000; /* Inner circle color black */
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.2s ease;
+}
+
+.circular-checkbox input[type="checkbox"]:checked + span:after {
+  opacity: 1; /* Show inner circle when checked */
+}
+
