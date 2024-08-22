@@ -6,7 +6,6 @@ import SaleBanner from '../Components/HomeComponents/SaleBanner';
 import DiscountItems from '../Components/HomeComponents/Discount-Items';
 import ProductCarousel from '../Components/HomeComponents/BannerProductsCarousel';
 import ShowProductsBanner from '../Components/HomeComponents/showProductsBanner';
-import Address from '../Components/Payments/Addres';
 
 const Home = () => {
   return (
