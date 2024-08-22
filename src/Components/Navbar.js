@@ -17,10 +17,13 @@ const Navbar = () => {
   const [redIcon, setRedIcon] = useState("");
   const [activeLink, setActiveLink] = useState("home");
   const auth = localStorage.getItem("user");
-  const cartItems=useSelector((state)=>state.cart.cartItems);
-  
-  const totalQuantity=cartItems.reduce((accum,item)=>(accum+item.quantity),0)
-  
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
+  const totalQuantity = cartItems.reduce(
+    (accum, item) => accum + item.quantity,
+    0
+  );
+
   const LogIn = () => {
     navigate("/login");
   };
@@ -30,7 +33,7 @@ const Navbar = () => {
 
   return (
     <nav className="bg-white">
-      <div className="flex flex-row items-center justify-between py-5 px-6 lg:px-[120px]">
+      <div className="flex flex-row relative items-center justify-between py-5 px-6 lg:px-[120px]">
         <div className="flex items-center">
           <img
             src="/images/LogoVector.png"
@@ -61,28 +64,36 @@ const Navbar = () => {
             <div className="hidden lg:flex items-center justify-around gap-[22px]">
               <Link
                 to="/"
-                className={`font-medium text-[16px] leading-[19.09px] ${activeLink === "home" ? "opacity-100" : "opacity-50"}`}
+                className={`font-medium text-[16px] leading-[19.09px] ${
+                  activeLink === "home" ? "opacity-100" : "opacity-50"
+                }`}
                 onClick={() => setActiveLink("home")}
               >
                 Home
               </Link>
               <Link
                 to="/"
-                className={` ${activeLink === "about" ? "opacity-100" : "opacity-50"} font-medium text-[16px] leading-[19.09px]`}
+                className={` ${
+                  activeLink === "about" ? "opacity-100" : "opacity-50"
+                } font-medium text-[16px] leading-[19.09px]`}
                 onClick={() => setActiveLink("about")}
               >
                 About
               </Link>
               <Link
                 to="/"
-                className={` ${activeLink === "contact" ? "opacity-100" : "opacity-50"} font-medium text-[16px] leading-[19.09px]`}
+                className={` ${
+                  activeLink === "contact" ? "opacity-100" : "opacity-50"
+                } font-medium text-[16px] leading-[19.09px]`}
                 onClick={() => setActiveLink("contact")}
               >
                 Contact Us
               </Link>
               <Link
                 to="/"
-                className={` ${activeLink === "blog" ? "opacity-100" : "opacity-50"} font-medium text-[16px] leading-[19.09px]`}
+                className={` ${
+                  activeLink === "blog" ? "opacity-100" : "opacity-50"
+                } font-medium text-[16px] leading-[19.09px]`}
                 onClick={() => setActiveLink("blog")}
               >
                 Blog
@@ -90,15 +101,25 @@ const Navbar = () => {
             </div>
 
             <div className="hidden lg:flex gap-6">
-            {
-              redIcon==="redicon"?(<SolidHeartIcon className="w-8 h-8 text-red-500" onClick={()=>setRedIcon("icon")
-              }/>):(<OutlineHeartIcon className="w-8 h-8 text-black" onClick={()=>setRedIcon("redicon")
-              }/>)
-             }
+              {redIcon === "redicon" ? (
+                <SolidHeartIcon
+                  className="w-8 h-8 text-red-500"
+                  onClick={() => setRedIcon("icon")}
+                />
+              ) : (
+                <OutlineHeartIcon
+                  className="w-8 h-8 text-black"
+                  onClick={() => setRedIcon("redicon")}
+                />
+              )}
               <Link to="/product/shoppingcart">
-              <div className="relative">
-              <span className="absolute top-[-16px] right-[-12px] rounded-full p-1 text-white bg-black  text-[15px] font-600 h-7 w-7 text-center block">{totalQuantity}</span>
-                <ShoppingCartIcon className="w-8 h-8 text-black" />
+                <div className="relative">
+                  {totalQuantity >= 1 && (
+                    <span className="absolute top-[-16px] right-[-12px] rounded-full p-1 text-white bg-black  text-[15px] font-600 h-7 w-7 text-center block">
+                      {totalQuantity}
+                    </span>
+                  )}
+                  <ShoppingCartIcon className="w-8 h-8 text-black" />
                 </div>
               </Link>
               <UserDropdown />
@@ -123,41 +144,81 @@ const Navbar = () => {
       </div>
 
       {/* Mobile Menu */}
-      {menuOpen && (
-        <div className="lg:hidden p-4">
-          <XMarkIcon
-            className="w-8 h-8 text-black cursor-pointer mb-4"
-            onClick={() => setMenuOpen(false)}
-          />
-          <div className="flex flex-col gap-4">
-            <Link to="/" className="text-[16px]">
-              Home
-            </Link>
-            <Link to="/" className="text-[16px] opacity-50">
-              About
-            </Link>
-            <Link to="/" className="text-[16px] opacity-50">
-              Contact Us
-            </Link>
-            <Link to="/" className="text-[16px] opacity-50">
-              Blog
-            </Link>
-            <div className="flex gap-6 mt-4">
-             
-            {
-              redIcon==="redicon"?(<SolidHeartIcon className="w-8 h-8 text-red-500" onClick={()=>setRedIcon("icon")
-              }/>):(<OutlineHeartIcon className="w-8 h-8 text-black" onClick={()=>setRedIcon("redicon")
-              }/>)
-             }
-             
-             <Link to="/product/shoppingcart">
+      <div
+        className={`absolute top-14 right-0 p-3 rounded-md bg-[#F5F5F5] transition-transform duration-700  ease-out z-50 lg:hidden ${
+          menuOpen ? "translate-x-0" : "translate-x-full hidden"
+        }`}
+       
+      >
+        <XMarkIcon
+          className="w-8 h-8 text-black cursor-pointer mb-4"
+          onClick={() => setMenuOpen(false)}
+        />
+        <div className="flex flex-col gap-2 ">
+          <Link
+            to="/"
+            className={`font-medium text-[16px] leading-[19.09px] ${
+              activeLink === "home" ? "opacity-100" : "opacity-50"
+            }`}
+            onClick={() => setActiveLink("home")}
+          >
+            Home
+          </Link>
+          <Link
+            to="/"
+            className={` ${
+              activeLink === "about" ? "opacity-100" : "opacity-50"
+            } font-medium text-[16px] leading-[19.09px]`}
+            onClick={() => setActiveLink("about")}
+          >
+            About
+          </Link>
+          <Link
+            to="/"
+            className={` ${
+              activeLink === "contact" ? "opacity-100" : "opacity-50"
+            } font-medium text-[16px] leading-[19.09px]`}
+            onClick={() => setActiveLink("contact")}
+          >
+            Contact Us
+          </Link>
+          <Link
+            to="/"
+            className={` ${
+              activeLink === "blog" ? "opacity-100" : "opacity-50"
+            } font-medium text-[16px] leading-[19.09px]`}
+            onClick={() => setActiveLink("blog")}
+          >
+            Blog
+          </Link>
+
+          <div className="flex gap-6 mt-2">
+            {redIcon === "redicon" ? (
+              <SolidHeartIcon
+                className="w-8 h-8 text-red-500"
+                onClick={() => setRedIcon("icon")}
+              />
+            ) : (
+              <OutlineHeartIcon
+                className="w-8 h-8 text-black"
+                onClick={() => setRedIcon("redicon")}
+              />
+            )}
+
+            <Link to="/product/shoppingcart">
+              <div className="relative">
+                {totalQuantity >= 1 && (
+                  <span className="absolute top-[-16px] right-[-12px] rounded-full p-1 text-white bg-black  text-[15px] font-600 h-7 w-7 text-center block">
+                    {totalQuantity}
+                  </span>
+                )}
                 <ShoppingCartIcon className="w-8 h-8 text-black" />
-              </Link>
-              <UserDropdown />
-            </div>
+              </div>
+            </Link>
+            <UserDropdown />
           </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };

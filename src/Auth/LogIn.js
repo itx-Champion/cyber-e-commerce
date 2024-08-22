@@ -59,6 +59,7 @@ const LogIn = () => {
         alert(response.data.message);
         navigate("/");
       } else {
+        alert(response.data.message);
         navigate("/login");
       }
     } catch (error) {
@@ -66,6 +67,7 @@ const LogIn = () => {
         "Log in failed",
         error.response ? error.response.data : error.message
       );
+      alert(error.message);
     }
   };
 

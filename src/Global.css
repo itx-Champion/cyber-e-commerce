@@ -81,4 +81,7 @@
 .circular-checkbox input[type="checkbox"]:checked + span:after {
   opacity: 1; /* Show inner circle when checked */
 }
+*{
+  box-sizing: border-box;
+}
 
