@@ -22,7 +22,6 @@ router.post("/", async (req, resp) => {
     await sendEmail(
       user.email,
       "Welcome to Our Website",
-      `Hello ${user.name},\n\nThank you for registering with us!`
     );
     // assign a yoken
     jwt.sign(
