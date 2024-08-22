@@ -11,7 +11,6 @@ import Address from '../Components/Payments/Addres';
 const Home = () => {
   return (
     <div>
-    <Address/>
       <Banner/>
       <SmallerBanner/>
       <Category/>
