@@ -199,6 +199,7 @@ const Navbar = () => {
                 onClick={() => setRedIcon("icon")}
               />
             ) : (
+              
               <OutlineHeartIcon
                 className="w-8 h-8 text-black"
                 onClick={() => setRedIcon("redicon")}
