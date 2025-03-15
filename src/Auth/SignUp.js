@@ -70,8 +70,9 @@ const SignUp = () => {
       setErrors(newErrors);
       return;
     }
-
-    fetchData();
+alert("You are succesfully registered");
+navigate("/");
+  // fetchData();
   };
 
   const fetchData = async () => {

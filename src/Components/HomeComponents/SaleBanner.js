@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Loader from '../Loader';
 
 const SaleBanner = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <div className="bg-custom-gradient flex xs:flex-col lg:flex-row lg:justify-between xs:justify-center xs:items-center relative">
       <div className="lg:hidden flex">
@@ -20,9 +33,11 @@ const SaleBanner = () => {
         <p className="text-[#909090] text-16 font-400 leading-32px xs:pt-5 md:pt-0 pb-8">
           Commodo fames vitae vitae leo mauris in. Eu consequat.
         </p>
+         <Link to={`/allproducts `}>
         <button className="border border-white text-white bg-transparent py-2 px-6 rounded xs:w-[184px] h-[56px] md:w-auto md:h-auto">
           Shop Now
         </button>
+        </Link>
       </div>
       <div className="xs:block lg:hidden self-end">
         <img src="images/sale-short-4.png" alt="" />

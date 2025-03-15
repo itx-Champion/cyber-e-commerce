@@ -4,10 +4,12 @@ import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import { ClipLoader } from "react-spinners";
 
 const DiscountItems = () => {
   const [products, setProducts] = useState([]);
   const [likedProducts, setLikedProducts] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,6 +31,16 @@ const DiscountItems = () => {
         [id]: !preLikedProducts[id],
       }));
   }
+
+  const handleBuyNow = (id) => {
+    setLoading(true);
+    // Simulate a network request
+    setTimeout(() => {
+      setLoading(false);
+      // Navigate to the product page or perform other actions
+    }, 2000);
+  };
+
   if (!products)
     return (
       <div className="text-16px font-500 text-black text-center py-14">
@@ -70,9 +82,19 @@ const DiscountItems = () => {
                 <span className="font-600 text-[20px] leading-24px tracking-3 mb-2">
                   ${product.price}
                 </span>
-                <button className="text-white bg-black text-center rounded-md border py-2 px-14 font-400 text-14px leading-24px xs:whitespace-nowrap">
-                  Buy Now
+                <Link to={`/product/${product.id}`}>
+                <button 
+                  className="text-white bg-black text-center rounded-md border py-2 px-14 font-400 text-14px leading-24px xs:whitespace-nowrap relative"
+                  onClick={() => handleBuyNow(product.id)}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <ClipLoader size={20} color={product.bgColor === 'bg-black' ? '#fff' : '#000'} />
+                  ) : (
+                    "Buy Now"
+                  )}
                 </button>
+                </Link>
               </div>
             </div>
           ))}

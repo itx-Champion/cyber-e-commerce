@@ -11,6 +11,8 @@ import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import { useNavigate,useLocation } from "react-router-dom";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { ClipLoader } from "react-spinners";
+import Loader from "../Loader";
 
 const AllProducts = () => {
   const navigate=useNavigate();
@@ -24,12 +26,14 @@ const AllProducts = () => {
   const [likedProducts, setLikedProducts] = useState({});
   const [brandCounts, setBrandCounts] = useState({});
   const [selectedBrands, setSelectedBrands] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const toggleSection = (section) => {
     setOpenSection(openSection === section ? null : section);
   };
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true); // Start loading
       try {
         let response = await axios.get(
           "https://dummyjson.com/products/category/smartphones"
@@ -46,6 +50,8 @@ const AllProducts = () => {
         setBrandCounts(counts);
       } catch (error) {
         console.log("Error fetching data:", error);
+      } finally {
+        setLoading(false); // Stop loading
       }
     };
     fetchData();
@@ -72,6 +78,15 @@ const AllProducts = () => {
     );
   };
 
+  const handleBuyNow = (id) => {
+    setLoading(true);
+    // Simulate a network request
+    setTimeout(() => {
+      setLoading(false);
+      // Navigate to the product page or perform other actions
+    }, 2000);
+  };
+
   
   const allSelectedBrands = [...selectedBrands];
   
@@ -83,6 +98,14 @@ const AllProducts = () => {
  const FilteredPage=()=>{
 navigate("/allproducts/filter")
  }
+ if (loading) {
+  return (
+    <div className="flex justify-center items-center py-14">
+      <Loader size={50} color={"#000"} />
+    </div>
+  );
+}
+
  if (!products)
   return (
     <div className="text-16px font-500 text-black text-center py-14">
@@ -460,9 +483,19 @@ navigate("/allproducts/filter")
                     <span className="font-600 text-[20px] leading-24px tracking-3 mb-2">
                       ${product.price}
                     </span>
-                    <button className="text-white bg-black text-center rounded-md border py-2 px-14 font-400 text-14px leading-24px xs:whitespace-nowrap">
-                      Buy Now
+                    <Link to={`/product/${product.id}`}>
+                    <button 
+                      className="text-white bg-black text-center rounded-md border py-2 px-14 font-400 text-14px leading-24px xs:whitespace-nowrap relative"
+                      onClick={() => handleBuyNow(product.id)}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <ClipLoader size={20} color={product.bgColor === 'bg-black' ? '#fff' : '#000'} />
+                      ) : (
+                        "Buy Now"
+                      )}
                     </button>
+                    </Link>
                   </div>
                 </div>
               )

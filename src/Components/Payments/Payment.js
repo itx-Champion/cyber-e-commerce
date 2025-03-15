@@ -1,15 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { removeToCart } from "../../Redux/Actions/removeToCart";
-import { useState } from "react";
+import { toast } from 'react-toastify';
+import Loader from '../Loader';
 
 const Payment = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const [paymentOption, setPaymentOption] = useState("credit");
+  const [loading, setLoading] = useState(false);
   const address = useSelector((state) => state.address.address);
   const cart = useSelector((state) => state.cart.cartItems);
   const method = useSelector((state) => state.method.method);
@@ -36,10 +38,16 @@ const Payment = () => {
     navigate("/product/shoppingcart/shipping");
   };
   const PayAfter = () => {
-    navigate("/product/shoppingcart/purchased");
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      toast.success("Payment successful!");
+      navigate("/product/shoppingcart/purchased");
+    }, 1000);
   };
   const RemoveItem = (id) => {
     dispatch(removeToCart(id));
+    toast.success("Item removed from cart");
   };
   const PaymentOption = (name) => {
     setPaymentOption(name);
@@ -291,10 +299,10 @@ const Payment = () => {
               Back
             </button>
             <button
-              className="xs:w-[40%] lg:w-[50%] border py-3 border-black bg-black text-white rounded-md"
+              className={`${loading?"border-white":" bg-black"}xs:w-[40%] border-black lg:w-[50%] border py-3  text-white rounded-md`}
               onClick={PayAfter}
             >
-              Pay
+              {loading ? <Loader /> : "Pay"}
             </button>
           </div>
         </div>

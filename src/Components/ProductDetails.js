@@ -9,7 +9,9 @@ import axios from "axios";
 import DiscountItems from "./HomeComponents/Discount-Items";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import {addToCart} from '../Redux/Actions/addToCart'
+import { addToCart } from '../Redux/Actions/addToCart';
+import { toast } from 'react-toastify';
+import Loader from './Loader'; // Import the Loader component
 
 const ProductDetails = () => {
   const dispatch = useDispatch();
@@ -19,6 +21,7 @@ const ProductDetails = () => {
   const [mainImage, setMainImage] = useState("");
   const [toggle, setToggle] = useState(false);
   const [review, setReview] = useState([]);
+  const [loading, setLoading] = useState(true); // Add loading state
   // data fetch
   useEffect(() => {
     const fetchProduct = async () => {
@@ -28,13 +31,24 @@ const ProductDetails = () => {
         setMainImage(product.data.images[0]);
         const allReview = product.data.reviews;
         setReview(allReview);
+        setLoading(false); // Set loading to false after data is fetched
       } catch (error) {
         console.error("Error fetching the product:", error);
+        setLoading(false); // Set loading to false in case of error
       }
     };
 
     fetchProduct();
   }, [id]);
+
+  if (loading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <Loader /> {/* Display loader while loading */}
+      </div>
+    );
+  }
+
   if (!product)
     return (
       <div className="text-16px font-500 text-black text-center py-14">
@@ -43,6 +57,7 @@ const ProductDetails = () => {
     );
     const HandleAddToCart=()=>{
       dispatch(addToCart(product));
+      toast.success("Product added to cart!");
       navigate('/product/shoppingcart');
     }
 
@@ -65,23 +80,24 @@ const ProductDetails = () => {
           <div className="left-side flex xs:flex-col lg:flex-row gap-5 items-center md:w-[50%]">
             <div className="small-images flex xs:flex-row lg:flex-col items-center lg:justify-center gap-3 xs:w-[70%] xs:justify-around lg:w-[15%] py-3 lg:order-1 xs:order-2">
               {product.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={image}
-                  alt={product.title}
-                  className={`max-h-[80px] max-w-[70px] cursor-pointer ${
-                    mainImage === image ? "opacity-100" : "opacity-50"
-                  }`}
-                  onClick={() => setMainImage(image)}
-                />
+                <div key={index} className="relative">
+                  <img
+                    src={image}
+                    alt={product.title}
+                    className={`max-h-[80px] max-w-[70px] cursor-pointer ${mainImage === image ? "opacity-100" : "opacity-50"}`}
+                    onClick={() => setMainImage(image)}
+                  />
+                  {loading && <Loader />} {/* Display loader while image is loading */}
+                </div>
               ))}
             </div>
-            <div className="main-image w-[80%] lg:order-2 xs:order-1">
+            <div className="main-image w-[80%] lg:order-2 xs:order-1 relative">
               <img
                 src={mainImage}
                 alt={product.title}
                 className="max-h-[550px]"
               />
+              {loading && <Loader />} {/* Display loader while main image is loading */}
             </div>
           </div>
           {/* right side */}
@@ -296,7 +312,7 @@ const ProductDetails = () => {
             onClick={() => setToggle(!toggle)}
           >
             <span className="font-400 text-14px leading-24px whitespace-nowrap">
-              View More
+              {toggle?"View Less":"View More"}
             </span>
             {toggle ? (
               <ChevronUpIcon className="h-4 w-4" />

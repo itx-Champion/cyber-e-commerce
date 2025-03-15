@@ -15,11 +15,15 @@ import ProtectedRoute from "./Auth/ProtectedRoute";
 import Shipping from "./Components/Payments/Shipping";
 import Payment from "./Components/Payments/Payment";
 import PayAfterPage from "./Pages/payAfterPage";
+import React from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 function App() {
   return (
     <Router>
       <div className="App">
+        <ToastContainer />
         <Navbar />
         <Routes>
           <Route path="" element={<ProtectedRoute />}>

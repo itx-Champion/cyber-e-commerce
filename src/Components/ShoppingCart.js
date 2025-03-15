@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
@@ -6,15 +6,20 @@ import { removeToCart } from "../Redux/Actions/removeToCart";
 import { PlusIcon, MinusIcon } from "@heroicons/react/24/solid";
 import { incrementCart } from "../Redux/Actions/incrementCart";
 import { decrementCart } from "../Redux/Actions/decrementCart";
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+import Loader from './Loader';
+import { use } from "react";
 
 const ShoppingCart = () => {
+  const navigate=useNavigate();
   const dispatch = useDispatch();
   const cartProducts = useSelector((state) => state.cart.cartItems);
+  const [loading, setLoading] = useState(false);
 
   const handleRemove = (id) => {
     dispatch(removeToCart(id));
-    alert(`Product is removed with id:#${id}`);
+    toast.success(`Product is removed with id:#${id}`);
   };
   const incCart=(id)=>{
     dispatch(incrementCart(id));
@@ -22,7 +27,16 @@ const ShoppingCart = () => {
   const decCart=(id)=>{
     dispatch(decrementCart(id));
   }
-// for checking
+
+  const handleCheckout = () => {
+    setLoading(true);
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/product/shoppingcart/address");
+    }, 1000);
+  };
+
+  // for checking
   if (cartProducts.length > 0) {
     console.log("First product name:", cartProducts[0].title);
   } else {
@@ -152,11 +166,14 @@ const ShoppingCart = () => {
             </div>
           </div>
         </div>
-        <Link to="/product/shoppingcart/address">
-        <button className="bg-black text-white p-3 rounded-lg font-400 text-15px leading-24px">
-          Checkout
-        </button>
-        </Link>
+        <button
+  className={`${
+    loading ? "bg-white border border-black" : "bg-black"
+  } text-white p-3 minHeight-10px h-12 rounded-lg font-400 text-15px leading-24px flex items-center justify-center`}
+  onClick={handleCheckout}
+>
+  {loading ? <Loader style={{ width: "20px", height: "20px" }} /> : "Checkout"}
+</button>
       </div>
     </div>
   );

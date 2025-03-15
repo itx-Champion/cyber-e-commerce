@@ -1,19 +1,22 @@
 import React, { useState, useRef, useEffect } from "react";
 import { UserIcon } from "@heroicons/react/24/outline";
 import { useNavigate } from "react-router-dom";
+import Loader from './Loader';
 
 const UserDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [userName, setUserName] = useState(""); // Initialize with an empty string
+  const [loading, setLoading] = useState(true);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
 
   // Initialize userName when component mounts
   useEffect(() => {
-    const user = JSON.parse(localStorage.getItem("user"));
-    if (user && user.name) {
-      setUserName(user.name);
+    const user = localStorage.getItem("user");
+    if (user) {
+      setUserName(user);
     }
+    setLoading(false);
   }, []);
 
   const toggleDropdown = () => {
@@ -35,12 +38,16 @@ const UserDropdown = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    // localStorage.removeItem("token");
     navigate("/login");
   };
 
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
-    <div className="relative inline-block" ref={dropdownRef}>
+    <div className="relative inline-block hover:bg-gray-200 rounded-md cursor-pointer p-1" ref={dropdownRef}>
       <button onClick={toggleDropdown}>
         <UserIcon className="w-8 h-8 text-black" />
       </button>
@@ -49,8 +56,8 @@ const UserDropdown = () => {
         <div className="absolute right-0 mt-2 w-36 bg-white border rounded-md shadow-lg z-10">
           <div className="flex flex-col py-2 px-2">
             <span className="block text-gray-700 font-semibold ml-4 mb-[-8px]">
-              {userName}
-            </span>
+            {userName.length > 9 ? userName.substring(0, 9) + "..." : userName}
+             </span>
             <button
               className="mt-2 w-full text-left text-red-600 hover:bg-red-100 rounded-md py-2 px-4"
               onClick={() => handleLogout()}

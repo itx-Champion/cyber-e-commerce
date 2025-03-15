@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Slider from "react-slick";
 
 const ProductCarousel = () => {
@@ -27,9 +28,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+           <Link to={`/allproducts`}>
           <button className="bg-transparent border border-black text-black py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
 
         {/* Second Product */}
@@ -44,9 +47,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-black text-black py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
 
         {/* Third Product */}
@@ -61,9 +66,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-black text-black py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
 
         {/* Fourth Product */}
@@ -80,9 +87,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-white text-white py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
       </div>
       <div className="md:max-w-[50%] xs:max-w-full mx-auto mb-8 xs:block lg:hidden">
@@ -99,9 +108,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-black text-black py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
 
         {/* Second Product */}
@@ -116,9 +127,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-black text-black py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
 
         {/* Third Product */}
@@ -133,9 +146,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-black text-black py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
 
         {/* Fourth Product */}
@@ -152,9 +167,11 @@ const ProductCarousel = () => {
             iPad combines a magnificent 10.2-inch Retina display, incredible
             performance, multitasking and ease of use.
           </p>
+          <Link to={`/allproducts`}>
           <button className="bg-transparent border border-white text-white py-2 px-6 rounded">
             Shop Now
           </button>
+          </Link>
         </div>
       </Slider>
     </div>

@@ -1,6 +1,19 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
+import { Link } from "react-router-dom";
+import Loader from '../Loader';
 
 const SmallerBanner = () => {
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setLoading(false), 1000);
+    return () => clearTimeout(timer);
+  }, []);
+
+  if (loading) {
+    return <Loader />;
+  }
+
   return (
     <section className="flex items-stretch xs:flex-col lg:flex-row">
       <div className="left-div flex flex-1 flex-col xs:w-full  lg:w-1/2">
@@ -79,9 +92,11 @@ const SmallerBanner = () => {
             The new 15‑inch MacBook Air makes room for more of what you love
             with a spacious Liquid Retina display.
           </p>
+           <Link to={`/allproducts `}>
           <button className="font-500 text-[16px] leading-[24px] text-center border border-black rounded-md py-4 px-12 xs:w-full sm:w-[184px] h-[56px] sm:self-center lg:self-start">
             Shop Now
           </button>
+          </Link>
         </div>
         <div className="right-img h-full w-[80%] flex justify-center items-center lg:order-2 xs:order-1">
           <img

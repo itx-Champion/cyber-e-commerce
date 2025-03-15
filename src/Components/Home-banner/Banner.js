@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 const Banner = () => {
   return (
     <div className="main-Banner">
@@ -18,9 +19,11 @@ const Banner = () => {
           <p className="main-banner-p text-center lg:text-left text-base md:text-lg lg:text-xl xs:w-[370px] sm:w-auto">
             Created to change everything for the better. For everyone.
           </p>
+          <Link to={`/allproducts `}>
           <button className="text-white text-center rounded-md border py-4 px-12 w-[184px] h-[56px]">
             Shop Now
           </button>
+          </Link>
         </div>
 
         <div className="Banner-image xs:pt-6 lg:pt-0">

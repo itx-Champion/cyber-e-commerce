@@ -1,9 +1,11 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const CategoryList = ({ iconData }) => {
   return (
     <div className="category-list grid lg:grid-cols-6 gap-7 xs:grid-cols-2">
       {iconData.map((category, index) => (
+        <Link to={`/allproducts `}>
         <div
           key={index}
           className="category-item flex flex-col items-center justify-center py-5 px-4 rounded-md bg-[#EDEDED]"
@@ -22,6 +24,7 @@ const CategoryList = ({ iconData }) => {
             {category.name}
           </span>
         </div>
+          </Link>
       ))}
     </div>
   );

@@ -3,11 +3,13 @@ import { HeartIcon as OutlineHeartIcon } from "@heroicons/react/24/outline";
 import { HeartIcon as SolidHeartIcon } from "@heroicons/react/24/solid";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import Loader from '../Loader';
 
 const ShowProductsBanner = () => {
   const [products, setProducts] = useState([]);
   const [likedProducts, setLikedProducts] = useState({});
   const [activeTab, setActiveTab] = useState("New Arrival");
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -16,8 +18,10 @@ const ShowProductsBanner = () => {
           "https://dummyjson.com/products/category/smartphones"
         );
         setProducts(response.data.products);
+        setLoading(false);
       } catch (error) {
         console.log("Error fetching data:", error);
+        setLoading(false);
       }
     };
     fetchData();
@@ -41,12 +45,18 @@ const ShowProductsBanner = () => {
       [id]: !prevLikedProducts[id],
     }));
   };
+
+  if (loading) {
+    return <Loader />;
+  }
+
   if (!products)
     return (
       <div className="text-16px font-500 text-black text-center py-14">
          Product is Loading...<br/><br/>Please wait
       </div>
     );
+
   return (
     <div className="lg:px-[140px] py-14 xs:px-[25px]">
       <div className="flex flex-col xs:gap-8 md:gap-6">
@@ -139,9 +149,11 @@ const ShowProductsBanner = () => {
                 <span className="font-600 text-[20px] leading-24px tracking-3 mb-2">
                   ${product.price}
                 </span>
+                <Link to={`/product/${product.id}`}>
                 <button className="text-white bg-black text-center rounded-md border py-2 px-14 font-400 text-14px leading-24px xs:whitespace-nowrap">
                   Buy Now
                 </button>
+                </Link>
               </div>
             </div>
           ))}

@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Link, useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
+
 const LogIn = () => {
   const navigate = useNavigate();
   const [logIn, setLogIn] = useState("Enter your registered email");
@@ -22,53 +24,64 @@ const LogIn = () => {
   };
 
   //   check if user save in local then no goback to the login page
-  useEffect(() => {
-    const auth = localStorage.getItem("user");
-    if (auth) {
-      navigate("/");
-    }
-  }, []);
+  // useEffect(() => {
+  //   const auth = localStorage.getItem("user");
+  //   if (auth) {
+  //     navigate("/");
+  //   }
+  // }, []);
 
   const fetchData = async () => {
-    const token = JSON.parse(localStorage.getItem("token"));
-    console.log(token);
-    const config = {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    };
-    // we can't attach a token with login request because assign a token with login request and then we send a any request to backend then add a token with request then verifyToken in backend with middleware and send a response...
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/login",
-        formData,
-        config
-      );
-      let message = response.data.message;
-      console.log(message);
-      setLogIn(message);
-      if (response.data.token) {
-        const user = response.data.user;
-        const token = response.data.token;
-        console.log(token);
 
-        localStorage.setItem("user", JSON.stringify(user));
-        localStorage.setItem("token", JSON.stringify(token));
+    if (!formData.email || !formData.password) {
+      toast.error("Please fill all the fields");
+      return;
+  }
+  console.log(formData.email,"email");
+  // Save email to localStorage with user's name
+  localStorage.setItem("user", formData?.email);
 
-        alert(response.data.message);
-        navigate("/");
-      } else {
-        alert(response.data.message);
-        navigate("/login");
-      }
-    } catch (error) {
-      console.log(
-        "Log in failed",
-        error.response ? error.response.data : error.message
-      );
-      alert(error.message);
-    }
+  toast.success("You are successfully logged in");
+  navigate("/");
+    // const token = JSON.parse(localStorage.getItem("token"));
+    // console.log(token);
+    // const config = {
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //     Authorization: `Bearer ${token}`,
+    //   },
+    // };
+    // // we can't attach a token with login request because assign a token with login request and then we send a any request to backend then add a token with request then verifyToken in backend with middleware and send a response...
+    // try {
+    //   const response = await axios.post(
+    //     "http://localhost:3001/login",
+    //     formData,
+    //     config
+    //   );
+    //   let message = response.data.message;
+    //   console.log(message);
+    //   setLogIn(message);
+    //   if (response.data.token) {
+    //     const user = response.data.user;
+    //     const token = response.data.token;
+    //     console.log(token);
+
+    //     localStorage.setItem("user", JSON.stringify(user));
+    //     localStorage.setItem("token", JSON.stringify(token));
+
+    //     toast.success(response.data.message);
+    //     navigate("/");
+    //   } else {
+    //     toast.error(response.data.message);
+    //     navigate("/login");
+    //   }
+    // } catch (error) {
+    //   console.log(
+    //     "Log in failed",
+    //     error.response ? error.response.data : error.message
+    //   );
+    //   toast.error(error.message);
+    // }
   };
 
   return (
@@ -77,7 +90,7 @@ const LogIn = () => {
         className="register flex flex-col gap-4 p-6 xs:w-[90%] sm:w-[80%] border border-[#9F9F9F] bg-[#F5F5F5] rounded-md"
         onClick={submitHandle}
       >
-       <Link to="/register" className="flex justify-center">
+       {/* <Link to="/register" className="flex justify-center">
           <div className="inline-block text-center">
             <p
               className="font-500 text-[20px] text-red-500 mb-3"
@@ -86,7 +99,7 @@ const LogIn = () => {
               {logIn ? logIn : ""}
             </p>
           </div>
-        </Link>
+        </Link> */}
         <span className="mb-5 font-500 text-[20px] text-center">Login In</span>
 
         {/* Email */}

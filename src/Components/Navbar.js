@@ -125,7 +125,7 @@ const Navbar = () => {
               <UserDropdown />
             </div>
           </>
-        ) : (
+         ) : (
           <div className="flex gap-4">
             <button
               className="text-white bg-black text-center rounded-md border py-2 px-6 font-500 text-16px leading-24px xs:"
@@ -140,7 +140,7 @@ const Navbar = () => {
               Sign up
             </button>
           </div>
-        )}
+        )} 
       </div>
 
       {/* Mobile Menu */}
@@ -192,7 +192,7 @@ const Navbar = () => {
             Blog
           </Link>
 
-          <div className="flex gap-6 mt-2">
+          <div className="flex items-center gap-6 mt-2 ">
             {redIcon === "redicon" ? (
               <SolidHeartIcon
                 className="w-8 h-8 text-red-500"
@@ -215,6 +215,7 @@ const Navbar = () => {
                 <ShoppingCartIcon className="w-8 h-8 text-black" />
               </div>
             </Link>
+
             <UserDropdown />
           </div>
         </div>
