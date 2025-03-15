@@ -4,15 +4,27 @@ import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { ShipmentMethod } from "../../Redux/Actions/shipMethod";
+import { FaMapMarkerAlt, FaShippingFast, FaCreditCard } from 'react-icons/fa';
+
 const Shipping = () => {
   const dispatch = useDispatch();
   const [selectedOption, setSelectedOption] = useState("free");
+
+  const getFutureDate = (days) => {
+    const date = new Date();
+    date.setDate(date.getDate() + days);
+    return date.toLocaleDateString("en-GB", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+    });
+  };
 
   useEffect(() => {
     const defaultShipData = {
       name: "Free",
       price: "0",
-      date: "14 Oct 2024",
+      date: getFutureDate(5),
     };
     dispatch(ShipmentMethod(defaultShipData));
   }, [dispatch]);
@@ -23,30 +35,29 @@ const Shipping = () => {
     switch (option) {
       case "free":
         shipData = {
-          name: "Express",
-          price: "8.50",
-          date: "5 Oct 2024",
+          name: "Free",
+          price: "0",
+          date: getFutureDate(6),
         };
         break;
       case "express":
         shipData = {
           name: "Express",
           price: "8.50",
-          date: "5 Oct 2024",
+          date: getFutureDate(4),
         };
         break;
       case "schedule":
         shipData = {
           name: "Schedule",
           price: "17",
-          date: "14 Oct 2024",
-
+          date: getFutureDate(3),
         };
         break;
       default:
         break;
     }
-dispatch(ShipmentMethod(shipData));
+    dispatch(ShipmentMethod(shipData));
   };
 
   return (
@@ -56,11 +67,7 @@ dispatch(ShipmentMethod(shipData));
         {/* Address */}
         <Link to="/product/shoppingcart/address">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7 opacity-50"
-            />
+            <FaMapMarkerAlt className="h-7 w-7 opacity-50" />
             <div className="flex flex-col font-500">
               <span className="text-[14px] leading-18px  text-[#B2B2B2]">
                 Step 1
@@ -74,11 +81,7 @@ dispatch(ShipmentMethod(shipData));
         {/* Shipping */}
         <Link to="/product/shoppingcart/shipping">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7"
-            />
+            <FaShippingFast className="h-7 w-7" />
             <div className="flex flex-col font-500">
               <span className="text-[14px] leading-18px">Step 2</span>
               <span className="[text-19px] leading-[24px] ">Shipping</span>
@@ -88,11 +91,7 @@ dispatch(ShipmentMethod(shipData));
         {/* Payment */}
         <Link to="/product/shoppingcart/payment">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7 opacity-50"
-            />
+            <FaCreditCard className="h-7 w-7 opacity-50" />
             <div className="flex flex-col font-500">
               <span className="text-[14px] leading-18px text-[#B2B2B2]">
                 Step 3
@@ -133,7 +132,7 @@ dispatch(ShipmentMethod(shipData));
                 </span>
               </div>
               <span className="font-500 text-16px leading-24px">
-                14 oct 2024
+                {getFutureDate(6)}
               </span>
             </div>
 
@@ -160,7 +159,7 @@ dispatch(ShipmentMethod(shipData));
                 </span>
               </div>
               <span className="font-500 text-16px leading-24px">
-                5 oct 2024
+                {getFutureDate(4)}
               </span>
             </div>
 
@@ -188,7 +187,7 @@ dispatch(ShipmentMethod(shipData));
               </div>
               <div className="flex lg:flex-row xs:flex-col gap-4">
                 <span className="font-500 text-16px leading-24px">
-                  14 oct 2024
+                  {getFutureDate(3)}
                 </span>
               </div>
             </div>

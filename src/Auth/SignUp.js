@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate, Link } from "react-router-dom";
+import { toast } from "react-toastify";
 
 const SignUp = () => {
   const navigate = useNavigate();
@@ -38,6 +39,7 @@ const SignUp = () => {
 
   // submitHandle
   const submitHandle = (e) => {
+    toast.dismiss();
     e.preventDefault();
     const { name, email, password } = formData;
     let valid = true;
@@ -70,7 +72,7 @@ const SignUp = () => {
       setErrors(newErrors);
       return;
     }
-alert("You are succesfully registered");
+toast.success("You are succesfully registered");
 navigate("/");
   // fetchData();
   };

@@ -4,8 +4,10 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { removeToCart } from "../../Redux/Actions/removeToCart";
+import { clearCart } from "../../Redux/Actions/clearCart"; // Import clearCart action
 import { toast } from 'react-toastify';
 import Loader from '../Loader';
+import { FaMapMarkerAlt, FaShippingFast, FaCreditCard } from 'react-icons/fa';
 
 const Payment = () => {
   const navigate = useNavigate();
@@ -15,10 +17,10 @@ const Payment = () => {
   const address = useSelector((state) => state.address.address);
   const cart = useSelector((state) => state.cart.cartItems);
   const method = useSelector((state) => state.method.method);
-  const methodFee = parseFloat(method.price);
+  const methodFee = parseFloat(method?.price);
   console.log("method fee", methodFee);
   const subTotal = cart.reduce(
-    (accum, item) => accum + item.price * item.quantity,
+    (accum, item) => accum + item?.price * item?.quantity,
     0
   );
   const tax = 0.02;
@@ -42,6 +44,7 @@ const Payment = () => {
     setTimeout(() => {
       setLoading(false);
       toast.success("Payment successful!");
+      dispatch(clearCart()); // Clear the cart
       navigate("/product/shoppingcart/purchased");
     }, 1000);
   };
@@ -60,11 +63,7 @@ const Payment = () => {
         {/* Address */}
         <Link to="/product/shoppingcart/address">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7 opacity-50"
-            />
+            <FaMapMarkerAlt className="h-7 w-7 opacity-50" />
             <div className="flex flex-col font-500">
               <span className="text-[14px] leading-18px  text-[#B2B2B2]">
                 Step 1
@@ -78,11 +77,7 @@ const Payment = () => {
         {/* Shipping */}
         <Link to="/product/shoppingcart/shipping">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7 opacity-50"
-            />
+            <FaShippingFast className="h-7 w-7 opacity-50" />
             <div className="flex flex-col font-500 text-[#B2B2B2]">
               <span className="text-[14px] leading-18px">Step 2</span>
               <span className="[text-19px] leading-[24px] ">Shipping</span>
@@ -92,11 +87,7 @@ const Payment = () => {
         {/* Payment */}
         <Link to="/product/shoppingcart/payment">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7"
-            />
+            <FaCreditCard className="h-7 w-7" />
             <div className="flex flex-col font-500">
               <span className="text-[14px] leading-18px">Step 3</span>
               <span className="[text-19px] leading-[24px] ">Payment</span>
@@ -111,7 +102,7 @@ const Payment = () => {
           <span className="font-500 text-[20px] leading-18px">Summary</span>
           {/* cart-items */}
           <div className="flex flex-col gap-3">
-            {cart.map((item, index) => (
+            {cart?.map((item, index) => (
               <div
                 key={index}
                 className="flex items-center bg-[#F6F6F6] rounded-lg px-3 py-2 font-500 text-16px leading-24px justify-between"
@@ -123,17 +114,17 @@ const Payment = () => {
                     className="h-8 w-7"
                   />
                   <span className="flex items-center font-400 text-16px leading-24px">
-                    {item.title}
+                    {item?.title}
                   </span>
                   <span className="flex items-center font-400 text-16px leading-24px">
-                    {item.brand}
+                    {item?.brand}
                   </span>
                 </div>
                 <div className="flex">
-                  <span>{item.quantity * item.price}</span>
+                  <span>{item?.quantity * item?.price}</span>
                   <XMarkIcon
                     className="h-6 w-6 text-[text-[#545454] ml-5 cursor-pointer"
-                    onClick={() => RemoveItem(item.id)}
+                    onClick={() => RemoveItem(item?.id)}
                   />
                 </div>
               </div>
@@ -147,18 +138,18 @@ const Payment = () => {
                 Address
               </span>
               <span className="font-400 text-16px leading-24px text-[#545454]">
-                {address[0].name}
+                {address[0]?.name}
               </span>
               <div className="flex gap-2 items-center text-[#545454]">
                 <span className="font-400 text-16px leading-24px">
-                  {address[0].details}
+                  {address[0]?.details}
                 </span>
                 <span className="p-1 bg-black text-white rounded-md font-400 text-[10px]">
-                  {address[0].option}
+                  {address[0]?.option}
                 </span>
               </div>
               <span className="font-400 text-15px leading-24px mt-[-12px] text-[#545454]">
-                {address[0].contact}
+                {address[0]?.contact}
               </span>
 
               <span className="font-500 text-[18px] leading-18px ">
@@ -167,10 +158,10 @@ const Payment = () => {
               <div className="flex items-center justify-between  mt-[-8px] text-[#545454]">
                 <div className="flex gap-4 items-center">
                   <span className="font-400 text-16px leading-24px">
-                    {method.name}
+                    {method?.name}
                   </span>
                   <span className="font-500 text-[14px] leading-18px text-[#545454]">
-                    {method.date}
+                    {method?.date}
                   </span>
                 </div>
                 <span className="font-400 text-16px leading-24px">
@@ -299,10 +290,10 @@ const Payment = () => {
               Back
             </button>
             <button
-              className={`${loading?"border-white":" bg-black"}xs:w-[40%] border-black lg:w-[50%] border py-3  text-white rounded-md`}
+              className={` xs:w-[40%] border-black  lg:w-[50%] border py-3  text-white rounded-md`}
               onClick={PayAfter}
             >
-              {loading ? <Loader /> : "Pay"}
+             Pay
             </button>
           </div>
         </div>

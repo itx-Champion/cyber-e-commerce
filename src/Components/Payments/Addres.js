@@ -2,12 +2,16 @@ import React, { useState } from "react";
 import { PlusIcon } from "@heroicons/react/24/outline";
 import { XMarkIcon } from "@heroicons/react/24/outline";
 import { FaPencilAlt } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { SetAddress } from "../../Redux/Actions/setAddress";
+import { FaMapMarkerAlt, FaShippingFast, FaCreditCard } from 'react-icons/fa';
+import { toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 const Address = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const savedAddress = useSelector((state) => state.address.address[0]);
   
   const [isFormVisible, setFormVisible] = useState(false);
@@ -32,7 +36,12 @@ const Address = () => {
   };
 
   const handleFormSubmit = (e) => {
+    toast.dismiss();
     e.preventDefault();
+    if (!formData.name || !formData.details || !formData.contact || !formData.option) {
+      toast.error("All fields are required.");
+      return;
+    }
     if (editIndex !== null) {
       // Update existing data
       const updatedDataList = [...dataList];
@@ -79,7 +88,13 @@ const Address = () => {
   };
 
   const handleButtonClick = () => {
+    toast.dismiss();
+    if (!selectedAddress) {
+      toast.error("Please add an address before proceeding.");
+      return;
+    }
     dispatch(SetAddress(selectedAddress));
+    navigate("/product/shoppingcart/shipping");
   };
 
   return (
@@ -89,11 +104,7 @@ const Address = () => {
         {/* Address */}
         <Link to="/product/shoppingcart/address">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7"
-            />
+            <FaMapMarkerAlt className="h-7 w-7" />
             <div className="flex flex-col font-500">
               <span className="text-[14px] leading-18px">Step 1</span>
               <span className="[text-19px] leading-[24px]">Address</span>
@@ -103,36 +114,20 @@ const Address = () => {
         {/* Shipping */}
         <Link to="/product/shoppingcart/shipping">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7 opacity-50"
-            />
+            <FaShippingFast className="h-7 w-7 opacity-50" />
             <div className="flex flex-col font-500">
-              <span className="text-[14px] leading-18px text-[#B2B2B2]">
-                Step 2
-              </span>
-              <span className="[text-19px] leading-[24px] text-[#B2B2B2]">
-                Shipping
-              </span>
+              <span className="text-[14px] leading-18px text-[#B2B2B2]">Step 2</span>
+              <span className="[text-19px] leading-[24px] text-[#B2B2B2]">Shipping</span>
             </div>
           </div>
         </Link>
         {/* Payment */}
         <Link to="/product/shoppingcart/payment">
           <div className="flex gap-1 items-center cursor-pointer">
-            <img
-              src="/images/locationicon.png"
-              alt="location"
-              className="h-7 w-7 opacity-50"
-            />
+            <FaCreditCard className="h-7 w-7 opacity-50" />
             <div className="flex flex-col font-500">
-              <span className="text-[14px] leading-18px text-[#B2B2B2]">
-                Step 3
-              </span>
-              <span className="[text-19px] leading-[24px] text-[#B2B2B2]">
-                Payment
-              </span>
+              <span className="text-[14px] leading-18px text-[#B2B2B2]">Step 3</span>
+              <span className="[text-19px] leading-[24px] text-[#B2B2B2]">Payment</span>
             </div>
           </div>
         </Link>
@@ -325,11 +320,12 @@ const Address = () => {
                 Back
               </button>
             </Link>
-            <Link to="/product/shoppingcart/shipping" className="sm:w-[35%] xmd:w-[20%]">
-              <button className="text-white border-2 border-black bg-black rounded-md px-10 py-4 text-center w-[100%] " onClick={handleButtonClick}>
-                Next
-              </button>
-            </Link>
+            <button
+              className="text-white border-2 border-black bg-black rounded-md px-10 py-4 text-center w-[100%] sm:w-[35%] xmd:w-[20%]"
+              onClick={handleButtonClick}
+            >
+              Next
+            </button>
           </div>
         </div>
       </div>

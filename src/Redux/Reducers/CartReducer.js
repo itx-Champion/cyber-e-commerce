@@ -2,6 +2,7 @@ import { ADD_To_CART } from "../Actions/addToCart";
 import { REMOVE_To_CART } from "../Actions/removeToCart";
 import { INCREMENT_CART } from "../Actions/incrementCart";
 import { DECREMENT_CART } from "../Actions/decrementCart";
+import { CLEAR_CART } from "../Actions/clearCart"; // Import clearCart action
 
 const initialState = {
   cartItems: [],
@@ -52,6 +53,11 @@ const cartReducer = (state = initialState, action) => {
             ? { ...item, quantity: item.quantity - 1 }
             : item
         ),
+      };
+    case CLEAR_CART:
+      return {
+        ...state,
+        cartItems: [],
       };
     default:
       return state;

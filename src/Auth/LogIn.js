@@ -32,7 +32,7 @@ const LogIn = () => {
   // }, []);
 
   const fetchData = async () => {
-
+toast.dismiss();
     if (!formData.email || !formData.password) {
       toast.error("Please fill all the fields");
       return;

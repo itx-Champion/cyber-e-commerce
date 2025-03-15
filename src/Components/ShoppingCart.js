@@ -167,12 +167,10 @@ const ShoppingCart = () => {
           </div>
         </div>
         <button
-  className={`${
-    loading ? "bg-white border border-black" : "bg-black"
-  } text-white p-3 minHeight-10px h-12 rounded-lg font-400 text-15px leading-24px flex items-center justify-center`}
+  className={` text-white p-3 bg-black minHeight-10px h-12 rounded-lg font-400 text-15px leading-24px flex items-center justify-center`}
   onClick={handleCheckout}
 >
-  {loading ? <Loader style={{ width: "20px", height: "20px" }} /> : "Checkout"}
+  Checkout
 </button>
       </div>
     </div>
