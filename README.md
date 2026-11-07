@@ -1,70 +1,77 @@
-# Getting Started with Create React App
+# Cyber — Electronics Storefront
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+[![CI](https://github.com/itx-Champion/cyber-e-commerce/actions/workflows/ci.yml/badge.svg)](https://github.com/itx-Champion/cyber-e-commerce/actions/workflows/ci.yml)
 
-## Available Scripts
+**Live demo:** [cyber-e-commerce-blond.vercel.app](https://cyber-e-commerce-blond.vercel.app) · **Stack:** Next.js 16 · React 19 · TypeScript · Tailwind CSS 4 · Motion · Zustand · Zod · Vitest
 
-In the project directory, you can run:
+![Cyber home page](docs/screenshots/01-home.png)
 
-### `npm start`
+A production-style e-commerce storefront for phones, laptops, tablets and accessories. Shoppers can browse, filter, search, save favourites, and check out as a guest or with an account. The full flow runs end to end: product discovery → cart → address → shipping → payment → order confirmation → order history.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+> Demo store: product data comes from the public [DummyJSON](https://dummyjson.com) API. No real orders or payments are processed — use the test card `4242 4242 4242 4242`.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+| Area | What it does |
+|---|---|
+| **Home** | Animated hero with a pointer-driven 3D tilt, brand marquee, category bento grid, tabbed product rails (trending, top rated, deals, new), a deal of the day with a live countdown, promo banners |
+| **Catalog** | Filter by category, brand, price and rating, plus an in-stock toggle and six sort orders. Filters live in the URL, so every view is shareable and survives refresh. Active-filter chips and a bottom-sheet filter panel on mobile |
+| **Search** | `Ctrl K` command-style search with prefix matching, keyboard navigation and a full-results page |
+| **Product page** | Image gallery with hover zoom, live stock status, a delivery estimate derived from the supplier's shipping time, quantity selector, add-to-cart / buy-now, wishlist, specs and reviews tabs, related products. JSON-LD structured data powers rich search results |
+| **Cart** | Slide-over drawer and full cart page, free-shipping progress bar, quantity limits based on stock, promo codes (`CYBER10`, `WELCOME5`) |
+| **Checkout** | Three-step flow (address → shipping → payment) with Zod validation and inline errors, three delivery speeds with date estimates, card validation (Luhn check, expiry, CVC, brand detection) or cash on delivery, guest checkout |
+| **Account** | Sign in or register, saved address, order history; cart, wishlist and account persist across visits |
+| **Quality** | Static generation of all product pages with hourly revalidation (`"use cache"` + `cacheLife`), `next/image` optimisation, skip link and keyboard support, reduced-motion support, security headers, sitemap, robots and an OG image |
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Screenshots
 
-### `npm run build`
+| Catalog with filters | Product page |
+|---|---|
+| ![Catalog](docs/screenshots/03-catalog.png) | ![Product](docs/screenshots/04-product.png) |
+| **Cart drawer** | **Checkout** |
+| ![Cart](docs/screenshots/05-cart.png) | ![Checkout](docs/screenshots/06-checkout.png) |
+| **Order confirmation** | **Mobile** |
+| ![Success](docs/screenshots/07-success.png) | <img src="docs/screenshots/08-mobile.png" alt="Mobile home" width="260"> |
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Architecture
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+```
+src/
+├─ app/                      # Routes: home, products, products/[id], cart, checkout, account, wishlist
+├─ components/
+│  ├─ home/                  # Hero, bento, product tabs, deal of the day
+│  ├─ catalog/               # Filters, sorting, URL-synced state
+│  ├─ product/               # Gallery, buy box, details tabs
+│  └─ …                      # Header, cart drawer, search, product card, order summary
+└─ lib/
+   ├─ products.ts            # Server-only catalog fetchers with schema validation and caching
+   ├─ catalog-filter.ts      # Pure search / filter / sort logic (unit tested)
+   ├─ pricing.ts             # Totals, shipping, tax, promos, delivery dates (unit tested)
+   ├─ checkout.ts            # Zod schemas, Luhn and expiry validation (unit tested)
+   └─ store.ts               # Zustand stores for cart, wishlist and account, persisted to localStorage
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Decisions worth noting**
 
-### `npm run eject`
+- **Server-rendered catalog, client-side filtering.** Product pages are pre-rendered at build time and revalidated hourly. The catalog page receives the full electronics range once and filters instantly in the browser, so filters feel immediate with no loading spinners.
+- **Validated data at the boundary.** API responses are parsed with Zod before they reach components, so a malformed product can't crash a page.
+- **One source of truth for money.** Cart, drawer, checkout and tests share `computeTotals`, so the totals agree to the cent everywhere.
+- **Hydration-safe persistence.** Stores rehydrate after first paint, and counts render only once hydrated, so server HTML and client state never disagree.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Run locally
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```bash
+npm install
+npm run dev        # http://localhost:3000
+npm test           # unit tests (Vitest)
+npm run typecheck
+npm run build
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+No environment variables are required.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+---
 
-## Learn More
+Previous version: the original Create React App build lives in the git history (commit `7e6d872`).
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Built by **Muhammad Ahmad**, AI Engineer & Full-Stack Developer. [GitHub](https://github.com/itx-Champion)
